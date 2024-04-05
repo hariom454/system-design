@@ -1,0 +1,16 @@
+/*
+Requirements:
+1. Should be able to create a sprint
+2. Should be able to create a task
+3. assign it to sprint
+4. Task could be type of given and should be able to manage the status
+5. All the task assigned to a user and in a sprint should be visible in sprint board
+6. Task needs to have start and end dates
+7. Have an api to get delayed tasks in a sprint
+
+Validations:
+1. Max 2 tasks could be in progress for a user
+2. SPrint should have max 20 tasks
+3. Only valid status change is allowed,
+
+*/
