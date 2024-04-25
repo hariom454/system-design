@@ -11,7 +11,6 @@ import org.example.repositories.InMemoryRepo;
 //Handles operations on sprint
 public class SprintService {
 
-  HashMap<String, Sprint> sprints = new HashMap<>();
   TaskService taskService = new TaskService();
   InMemoryRepo inMemoryRepo = InMemoryRepo.getInstance();
 

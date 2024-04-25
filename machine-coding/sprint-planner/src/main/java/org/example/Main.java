@@ -9,6 +9,8 @@ public class Main {
 
   public static void main(String[] args) {
     //System.out.println("Hello world!");
+    System.out.println("Starting the card service, specify operation as asked");
+
     SprintService sprintService = new SprintService();
     TaskService taskService = new TaskService();
 
