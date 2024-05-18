@@ -1,7 +1,11 @@
 package org.example.service;
 
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -34,19 +38,19 @@ public class CardService {
   public void processInput(String[] items) {
     CommandType commandType = CommandType.valueOf(items[0]);
     switch (commandType) {
-      case BALANCE -> {
+      case BALANCE: {
         String cardNumber = items[1];
         Double amount = Double.valueOf(items[2]);
         balances.put(cardNumber, amount);
       }
-      case CHECK_IN -> {
+      case CHECK_IN:{
         // card number passenger type airport
         String cardNumber = items[1];
         PassengerType passengerType = PassengerType.valueOf(items[2]);
         String airportName = items[3];
         checkIn(cardNumber, airportName, passengerType);
       }
-      case PRINT_SUMMARY -> {
+      case PRINT_SUMMARY: {
         printSummary();
       }
     }
@@ -95,13 +99,13 @@ public class CardService {
 
   private int getCharge(PassengerType passengerType) {
     switch (passengerType) {
-      case ADULT -> {
+      case ADULT: {
         return 200;
       }
-      case KID -> {
+      case KID : {
         return 50;
       }
-      case SENIOR_CITIZEN -> {
+      case SENIOR_CITIZEN : {
         return 100;
       }
     }
@@ -117,13 +121,16 @@ public class CardService {
       System.out.println("TOTAL_COLLECTION " + entry.getKey() + " " + value.getTotalAmount() + " "
           + value.getDiscount());
       HashMap<PassengerType, Integer> unsortedMap = value.getCount();
+      List<SimpleEntry<Integer, String>> pas = new ArrayList<>();
+      unsortedMap.forEach((key1, value1) -> pas.add(new SimpleEntry<>(value1, key1.name())));
       System.out.println("PASSENGER_TYPE_SUMMARY");
-      unsortedMap.entrySet()
-          .stream()
-          .sorted(Map.Entry.comparingByValue())
-          .collect(Collectors.toMap(
-              Entry::getKey, Entry::getValue
-          )).forEach((key1, value1) -> System.out.println(key1 + " " + value1));
+      Collections.sort(pas, (first, second) -> {
+        if (Objects.equals(first.getKey(), second.getKey())) {
+          return first.getValue().compareTo(second.getValue());
+        }
+        return second.getKey() - first.getKey();
+      });
+      pas.forEach(item -> System.out.println(item.getValue() + " " + item.getKey()));
     }
 
   }
