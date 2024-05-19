@@ -1,16 +1,15 @@
 package org.example.service;
 
-import java.util.AbstractMap;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import org.example.dtos.Airport;
 import org.example.dtos.CommandType;
 import org.example.dtos.Passenger;
@@ -35,6 +34,20 @@ public class CardService {
     sc.close();
   }
 
+  public void getInput(String filepath) {
+    try {
+      Scanner sc = new Scanner(new BufferedReader(new FileReader(filepath)));
+      while (sc.hasNextLine()) {
+        String line = sc.nextLine();
+        String[] items = line.split(" ");
+        processInput(items);
+      }
+      sc.close();
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   public void processInput(String[] items) {
     CommandType commandType = CommandType.valueOf(items[0]);
     switch (commandType) {
@@ -42,16 +55,19 @@ public class CardService {
         String cardNumber = items[1];
         Double amount = Double.valueOf(items[2]);
         balances.put(cardNumber, amount);
+        break;
       }
-      case CHECK_IN:{
+      case CHECK_IN: {
         // card number passenger type airport
         String cardNumber = items[1];
         PassengerType passengerType = PassengerType.valueOf(items[2]);
         String airportName = items[3];
         checkIn(cardNumber, airportName, passengerType);
+        break;
       }
       case PRINT_SUMMARY: {
         printSummary();
+        break;
       }
     }
   }
@@ -102,10 +118,10 @@ public class CardService {
       case ADULT: {
         return 200;
       }
-      case KID : {
+      case KID: {
         return 50;
       }
-      case SENIOR_CITIZEN : {
+      case SENIOR_CITIZEN: {
         return 100;
       }
     }
@@ -114,7 +130,6 @@ public class CardService {
 
   private void printSummary() {
 
-    System.out.println("printing the summary");
     for (Map.Entry<String, Airport> entry : airports.entrySet()) {
 
       Airport value = entry.getValue();
@@ -124,7 +139,7 @@ public class CardService {
       List<SimpleEntry<Integer, String>> pas = new ArrayList<>();
       unsortedMap.forEach((key1, value1) -> pas.add(new SimpleEntry<>(value1, key1.name())));
       System.out.println("PASSENGER_TYPE_SUMMARY");
-      Collections.sort(pas, (first, second) -> {
+      pas.sort((first, second) -> {
         if (Objects.equals(first.getKey(), second.getKey())) {
           return first.getValue().compareTo(second.getValue());
         }
