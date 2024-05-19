@@ -133,8 +133,8 @@ public class CardService {
     for (Map.Entry<String, Airport> entry : airports.entrySet()) {
 
       Airport value = entry.getValue();
-      System.out.println("TOTAL_COLLECTION " + entry.getKey() + " " + value.getTotalAmount() + " "
-          + value.getDiscount());
+      System.out.println("TOTAL_COLLECTION " + entry.getKey() + " " + value.getTotalAmount().intValue() + " "
+          + value.getDiscount().intValue());
       HashMap<PassengerType, Integer> unsortedMap = value.getCount();
       List<SimpleEntry<Integer, String>> pas = new ArrayList<>();
       unsortedMap.forEach((key1, value1) -> pas.add(new SimpleEntry<>(value1, key1.name())));
