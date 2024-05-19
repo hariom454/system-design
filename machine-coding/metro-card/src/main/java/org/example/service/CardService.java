@@ -129,25 +129,27 @@ public class CardService {
   }
 
   private void printSummary() {
+    printAirportSummary("CENTRAL");
+    printAirportSummary("AIRPORT");
+  }
 
-    for (Map.Entry<String, Airport> entry : airports.entrySet()) {
+  private void printAirportSummary(String airport) {
 
-      Airport value = entry.getValue();
-      System.out.println("TOTAL_COLLECTION " + entry.getKey() + " " + value.getTotalAmount().intValue() + " "
-          + value.getDiscount().intValue());
-      HashMap<PassengerType, Integer> unsortedMap = value.getCount();
-      List<SimpleEntry<Integer, String>> pas = new ArrayList<>();
-      unsortedMap.forEach((key1, value1) -> pas.add(new SimpleEntry<>(value1, key1.name())));
-      System.out.println("PASSENGER_TYPE_SUMMARY");
-      pas.sort((first, second) -> {
-        if (Objects.equals(first.getKey(), second.getKey())) {
-          return first.getValue().compareTo(second.getValue());
-        }
-        return second.getKey() - first.getKey();
-      });
-      pas.forEach(item -> System.out.println(item.getValue() + " " + item.getKey()));
-    }
+    Airport value = airports.get(airport);
 
+    System.out.println("TOTAL_COLLECTION " + airport + " " + value.getTotalAmount().intValue() + " "
+        + value.getDiscount().intValue());
+    HashMap<PassengerType, Integer> unsortedMap = value.getCount();
+    List<SimpleEntry<Integer, String>> pas = new ArrayList<>();
+    unsortedMap.forEach((key1, value1) -> pas.add(new SimpleEntry<>(value1, key1.name())));
+    System.out.println("PASSENGER_TYPE_SUMMARY");
+    pas.sort((first, second) -> {
+      if (Objects.equals(first.getKey(), second.getKey())) {
+        return first.getValue().compareTo(second.getValue());
+      }
+      return second.getKey() - first.getKey();
+    });
+    pas.forEach(item -> System.out.println(item.getValue() + " " + item.getKey()));
   }
 
 }
