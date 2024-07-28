@@ -12,7 +12,7 @@ public class AirportMetroStation implements MetroStation {
   private int total;
   private int serviceFee;
   private int discount;
-  private List<Journey> journeys;
+  private final List<Journey> journeys;
 
   public AirportMetroStation() {
     this.journeys = new ArrayList<>();
@@ -63,6 +63,7 @@ public class AirportMetroStation implements MetroStation {
   @Override
   public void checkin(Journey j) {
     journeys.add(j);
+    updateCharges(j);
   }
 
   @Override
