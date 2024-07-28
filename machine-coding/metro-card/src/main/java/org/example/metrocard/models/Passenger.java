@@ -6,4 +6,10 @@ public interface Passenger {
 
   String getUserType();
 
+//  void addJourney(Journey journey);
+//
+//  Journey getJourney(String name);
+//
+//  Journey getLastJourney();
+
 }

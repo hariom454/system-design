@@ -1,7 +1,6 @@
 package org.example.metrocard.models;
 
 import org.example.metrocard.constants.MetroConstants;
-import org.example.metrocard.models.Passenger;
 
 public class Adult implements Passenger {
 

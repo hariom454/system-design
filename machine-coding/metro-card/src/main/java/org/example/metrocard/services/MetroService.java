@@ -1,15 +1,18 @@
 package org.example.metrocard.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.example.metrocard.constants.MetroConstants;
 import org.example.metrocard.models.AirportMetroStation;
 import org.example.metrocard.models.CentralStation;
+import org.example.metrocard.models.Charges;
 import org.example.metrocard.models.Journey;
 import org.example.metrocard.models.MetroCard;
 import org.example.metrocard.models.MetroStation;
 import org.example.metrocard.models.Passenger;
+import org.example.metrocard.utils.Pair;
 import org.example.metrocard.utils.PassengerFactory;
 
 public class MetroService {
@@ -57,31 +60,54 @@ public class MetroService {
     Passenger passenger =
         getPassenger(number) != null ? getPassenger(number) : addPassenger(number, type);
     MetroCard metroCard = getMetroCard(number);
-    Journey journey = getJourney(number);
-    if (journey == null) {
-      journey = new Journey(station, passenger);
-    }
-    int charges = MetroConstants.tc.get(type);
+    Journey journey = getLastJourney(number);
 
-    if (journey.isReturnJourney(station)) {
-      charges /= 2;
-      passengerJourneys.remove(number);
-    } else {
-      passengerJourneys.putIf(number, journey);
-    }
+    Charges charges = getFare(journey, station, type);
+    Journey newJourney = new Journey(station, passenger);
+    newJourney.setCharges(charges);
+
+    int serviceFee = metroCard.getServiceFee(charges.getFare());
+    charges.setServiceFee(serviceFee);
 
     MetroStation metroStation = metroStations.get(station);
-    metroStation.
+    metroStation.checkin(newJourney);
 
-
+    List<Journey> pass = passengerJourneys.getOrDefault(number, new ArrayList<>());
+    pass.add(newJourney);
+    passengerJourneys.put(number, pass);
   }
 
-  private Journey getJourney(String number) {
-    return passengerJourneys.get(number);
+  private Journey getLastJourney(String number) {
+    List<Journey> pj = passengerJourneys.get(number);
+    return pj != null ? pj.get(pj.size() - 1) : null;
   }
 
   public void printSummary() {
+    printSummary(metroStations.get(MetroConstants.CENTRAL_STATION));
+    printSummary(metroStations.get(MetroConstants.AIRPORT_STATION));
+  }
 
+  private void printSummary(MetroStation station) {
+    System.out.println(
+        "TOTAL_COLLECTION " + station.getStationName() + " " + station.getTotalCollection() + " "
+            + station.getTotalDiscount());
+    System.out.println("PASSENGER_TYPE_SUMMARY");
+    List<Pair> pas = station.getPassengerSummary();
+    pas.forEach(item -> System.out.println(item.getKey() + " " + item.getValue()));
+  }
+
+  private boolean isReturnJourney(Journey journey, String from) {
+    return journey != null && !journey.getFrom().equalsIgnoreCase(from);
+  }
+
+  private Charges getFare(Journey journey, String from, String type) {
+    int fare = MetroConstants.tc.get(type);
+    Charges charges = new Charges(fare);
+    if (isReturnJourney(journey, from)) {
+      fare /= 2;
+      charges.setDiscount(fare);
+    }
+    return charges;
   }
 
 }

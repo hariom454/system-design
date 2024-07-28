@@ -7,9 +7,13 @@ public interface MetroStation {
 
   int getTotalCollection();
 
+  int getTotalDiscount();
+
   List<Pair> getPassengerSummary();
 
-  void checkin(Passenger p, Journey j, int fare);
+  void checkin(Journey j);
+
+  String getStationName();
 }
 
 

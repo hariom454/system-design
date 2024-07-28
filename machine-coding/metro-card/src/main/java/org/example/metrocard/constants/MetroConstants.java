@@ -9,6 +9,9 @@ public class MetroConstants {
   public static final String SENIOR_CITIZEN = "SENIOR_CITIZEN";
   public static final String KIDS = "KIDS";
 
+  public static final String AIRPORT_STATION = "AIRPORT";
+  public static final String CENTRAL_STATION = "CENTRAL";
+
   public static final Map<String, Integer> tc = new HashMap<>();
 
   static {

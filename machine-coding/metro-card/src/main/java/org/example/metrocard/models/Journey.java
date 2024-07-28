@@ -1,38 +1,39 @@
 package org.example.metrocard.models;
 
+import org.example.metrocard.utils.Util;
+
 public class Journey {
 
-  private String from;
-  private String to;
+  private final String id;
+  private final String from;
   private final Passenger passenger;
+  private Charges charges;
 
-  public Journey(String from, String to, Passenger passenger) {
+
+  public Journey(String from, Passenger passenger) {
+    this.id = Util.getUniqueId();
     this.from = from;
-    this.to = to;
     this.passenger = passenger;
   }
 
-  public boolean isReturnJourney(String to) {
-    return from != null && !from.equalsIgnoreCase(to);
+  public String getId() {
+    return id;
   }
 
   public String getFrom() {
     return from;
   }
 
-  public void setFrom(String from) {
-    this.from = from;
-  }
-
-  public String getTo() {
-    return to;
-  }
-
-  public void setTo(String to) {
-    this.to = to;
-  }
 
   public Passenger getPassenger() {
     return passenger;
+  }
+
+  public Charges getCharges() {
+    return charges;
+  }
+
+  public void setCharges(Charges charges) {
+    this.charges = charges;
   }
 }
