@@ -2,7 +2,7 @@ package org.example.metrocard.models;
 
 public class Charges {
 
-  private int actualFare;
+  private final int actualFare;
   private int discount;
   private int serviceFee;
 
@@ -10,14 +10,6 @@ public class Charges {
     this.actualFare = fare;
     this.discount = 0;
     this.serviceFee = 0;
-  }
-
-  public int getActualFare() {
-    return actualFare;
-  }
-
-  public void setActualFare(int actualFare) {
-    this.actualFare = actualFare;
   }
 
   public int getFare() {

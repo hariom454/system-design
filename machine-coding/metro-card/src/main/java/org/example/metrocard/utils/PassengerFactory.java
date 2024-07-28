@@ -15,7 +15,7 @@ public class PassengerFactory {
       case "ADULT": {
         return new Adult(name);
       }
-      case "KIDS": {
+      case "KID": {
         return new Kid(name);
       }
       default: {
