@@ -1,7 +1,7 @@
-package org.example.metrocard.models;
+package org.example.metrocard.models.users;
 
 import org.example.metrocard.constants.MetroConstants;
-import org.example.metrocard.models.Passenger;
+import org.example.metrocard.models.users.Passenger;
 
 public class SeniorCitizen extends Passenger {
 

@@ -1,9 +1,12 @@
-package org.example.metrocard.models;
+package org.example.metrocard.models.stations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.example.metrocard.models.Charges;
+import org.example.metrocard.models.Journey;
+import org.example.metrocard.models.users.Passenger;
 import org.example.metrocard.utils.Pair;
 
 public abstract class MetroStation {

@@ -1,5 +1,6 @@
 package org.example.metrocard.models;
 
+import org.example.metrocard.models.users.Passenger;
 import org.example.metrocard.utils.Util;
 
 public class Journey {

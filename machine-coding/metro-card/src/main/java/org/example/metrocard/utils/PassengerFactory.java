@@ -1,9 +1,9 @@
 package org.example.metrocard.utils;
 
-import org.example.metrocard.models.Adult;
-import org.example.metrocard.models.Kid;
-import org.example.metrocard.models.Passenger;
-import org.example.metrocard.models.SeniorCitizen;
+import org.example.metrocard.models.users.Adult;
+import org.example.metrocard.models.users.Kid;
+import org.example.metrocard.models.users.Passenger;
+import org.example.metrocard.models.users.SeniorCitizen;
 
 public class PassengerFactory {
 

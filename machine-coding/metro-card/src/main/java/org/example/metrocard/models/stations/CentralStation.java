@@ -1,4 +1,4 @@
-package org.example.metrocard.models;
+package org.example.metrocard.models.stations;
 
 import org.example.metrocard.constants.MetroConstants;
 

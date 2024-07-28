@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.example.metrocard.constants.MetroConstants;
-import org.example.metrocard.models.AirportMetroStation;
-import org.example.metrocard.models.CentralStation;
+import org.example.metrocard.models.stations.AirportMetroStation;
+import org.example.metrocard.models.stations.CentralStation;
 import org.example.metrocard.models.Charges;
 import org.example.metrocard.models.Journey;
 import org.example.metrocard.models.MetroCard;
-import org.example.metrocard.models.MetroStation;
-import org.example.metrocard.models.Passenger;
+import org.example.metrocard.models.stations.MetroStation;
+import org.example.metrocard.models.users.Passenger;
 import org.example.metrocard.utils.Pair;
 import org.example.metrocard.utils.PassengerFactory;
 

@@ -1,8 +1,8 @@
 package org.example.metrocard.utils;
 
-import org.example.metrocard.models.AirportMetroStation;
-import org.example.metrocard.models.CentralStation;
-import org.example.metrocard.models.MetroStation;
+import org.example.metrocard.models.stations.AirportMetroStation;
+import org.example.metrocard.models.stations.CentralStation;
+import org.example.metrocard.models.stations.MetroStation;
 
 public class MetroStationFactory {
 

@@ -1,4 +1,4 @@
-package org.example.metrocard.models;
+package org.example.metrocard.models.users;
 
 public abstract class Passenger {
 
@@ -12,6 +12,6 @@ public abstract class Passenger {
     return name;
   }
 
-  abstract String getUserType();
+  public abstract String getUserType();
 
 }
