@@ -79,7 +79,7 @@ jar {
     archiveBaseName = 'geektrust' //Please do not change this final artifact name
     version =  null               //Please do not change this final artifact version
     manifest {
-        attributes 'Main-Class' : 'org.example.Main' //This is main class of your program which will be executed
+        attributes 'Main-Class' : 'org.example.metrocard.Main' //This is main class of your program which will be executed
     }
 
     // To create a single jar with all dependencies.

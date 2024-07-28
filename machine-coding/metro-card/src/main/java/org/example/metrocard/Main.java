@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.util.Scanner;
 import org.example.metrocard.services.MetroService;
 
-public class DriverClass {
+public class Main {
 
   private static final MetroService metroService = new MetroService();
 
