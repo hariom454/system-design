@@ -3,17 +3,10 @@ package org.example.metrocard.models;
 import org.example.metrocard.constants.MetroConstants;
 import org.example.metrocard.models.Passenger;
 
-public class SeniorCitizen implements Passenger {
-
-  private final String name;
+public class SeniorCitizen extends Passenger {
 
   public SeniorCitizen(String name) {
-    this.name = name;
-  }
-
-  @Override
-  public String getName() {
-    return name;
+    super(name);
   }
 
   @Override

@@ -2,17 +2,10 @@ package org.example.metrocard.models;
 
 import org.example.metrocard.constants.MetroConstants;
 
-public class Adult implements Passenger {
-
-  private final String name;
+public class Adult extends Passenger {
 
   public Adult(String name) {
-    this.name = name;
-  }
-
-  @Override
-  public String getName() {
-    return name;
+    super(name);
   }
 
   @Override

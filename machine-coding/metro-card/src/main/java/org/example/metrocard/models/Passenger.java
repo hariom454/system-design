@@ -1,15 +1,17 @@
 package org.example.metrocard.models;
 
-public interface Passenger {
+public abstract class Passenger {
 
-  String getName();
+  private final String name;
 
-  String getUserType();
+  public Passenger(String name) {
+    this.name = name;
+  }
 
-//  void addJourney(Journey journey);
-//
-//  Journey getJourney(String name);
-//
-//  Journey getLastJourney();
+  public String getName() {
+    return name;
+  }
+
+  abstract String getUserType();
 
 }
