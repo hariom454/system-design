@@ -69,10 +69,15 @@ public class MetroService {
     int serviceFee = metroCard.getServiceFee(charges.getFare());
     charges.setServiceFee(serviceFee);
 
+    metroCard.setBalance(-charges.getFare());
     MetroStation metroStation = metroStations.get(station);
     metroStation.checkin(newJourney);
 
     List<Journey> pass = passengerJourneys.getOrDefault(number, new ArrayList<>());
+    if (isReturnJourney(journey, station)) {
+      newJourney.setReturnJourney();
+    }
+
     pass.add(newJourney);
     passengerJourneys.put(number, pass);
   }
@@ -97,7 +102,8 @@ public class MetroService {
   }
 
   private boolean isReturnJourney(Journey journey, String from) {
-    return journey != null && !journey.getFrom().equalsIgnoreCase(from);
+    return journey != null && !journey.isReturnJourney() && !journey.getFrom()
+        .equalsIgnoreCase(from);
   }
 
   private Charges getFare(Journey journey, String from, String type) {

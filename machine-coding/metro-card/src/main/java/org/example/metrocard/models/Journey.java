@@ -8,6 +8,7 @@ public class Journey {
   private final String from;
   private final Passenger passenger;
   private Charges charges;
+  private boolean isReturnJourney = false;
 
 
   public Journey(String from, Passenger passenger) {
@@ -24,6 +25,13 @@ public class Journey {
     return from;
   }
 
+  public void setReturnJourney() {
+    isReturnJourney = true;
+  }
+
+  public boolean isReturnJourney() {
+    return isReturnJourney;
+  }
 
   public Passenger getPassenger() {
     return passenger;
