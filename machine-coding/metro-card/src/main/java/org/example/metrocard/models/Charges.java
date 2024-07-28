@@ -21,7 +21,11 @@ public class Charges {
   }
 
   public void setDiscount(int discount) {
-    this.discount = discount;
+    if (discount >= 0) {
+      this.discount = discount;
+    } else {
+      throw new IllegalArgumentException("discount shouldn't be negative.");
+    }
   }
 
   public int getServiceFee() {
@@ -29,6 +33,11 @@ public class Charges {
   }
 
   public void setServiceFee(int serviceFee) {
-    this.serviceFee = serviceFee;
+    if (serviceFee >= 0) {
+      this.serviceFee = serviceFee;
+    } else {
+      throw new IllegalArgumentException("service fees shouldn't be negative.");
+
+    }
   }
 }
