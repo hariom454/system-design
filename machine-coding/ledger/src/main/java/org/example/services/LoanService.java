@@ -17,7 +17,4 @@ public class LoanService {
     loans.put(account, loan);
   }
 
-  public Loan getLoan(Account account) {
-    return loans.get(account);
-  }
 }
