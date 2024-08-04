@@ -6,8 +6,8 @@ import org.example.models.Bank;
 
 public class LedgerService {
 
-  private AccountService accountService;
-  private BankService bankService;
+  private final AccountService accountService;
+  private final BankService bankService;
 
   public LedgerService() {
     this.accountService = new AccountService();
@@ -17,7 +17,7 @@ public class LedgerService {
   public void borrowMoney(String bankName, String borrowerName, int pa, int t, int i) {
     Bank bank = getOrAddBank(bankName);
     Account account = getOrAddAccount(borrowerName);
-    bank.borrowMoney(account,pa, t, i);
+    bank.borrowMoney(account, pa, t, i);
 
   }
 
@@ -45,22 +45,20 @@ public class LedgerService {
 
   public void repayment(String bankName, String borrowerName, int lAmount, int emiNo) {
 
-    Bank bank = getOrAddBank(bankName);
-    Account account = getOrAddAccount(borrowerName);
+    Bank bank = bankService.getBank(bankName);
+    Account account = accountService.getAccount(borrowerName);
     bank.repayment(account, lAmount, emiNo);
   }
 
   public void showBalance(String bankName, String borrowName, int emi) {
-    Bank bank = getOrAddBank(bankName);
-    Account account = getOrAddAccount(borrowName);
+    Bank bank = bankService.getBank(bankName);
+    Account account = accountService.getAccount(borrowName);
     Balance balance = bank.getBalance(account, emi);
-    balance.setBankName(bankName);
-    balance.setUserName(borrowName);
-    printBalance(balance);
+    printBalance(bankName, borrowName, balance);
   }
 
-  private void printBalance(Balance balance) {
-    System.out.printf("%s %s %s %s%n", balance.getBankName(), balance.getUserName(),
+  private void printBalance(String bankName, String userName, Balance balance) {
+    System.out.printf("%s %s %s %s%n", bankName, userName,
         balance.getRepaymentAmount(), balance.getRemainingEmi());
   }
 }
