@@ -1,4 +1,4 @@
-package main.java.org.example.metrocard.constants;
+package org.example.metrocard.constants;
 
 import java.util.HashMap;
 import java.util.Map;

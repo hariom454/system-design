@@ -18,3 +18,19 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+// Fat jar configuration to produce build/libs/geektrust.jar
+jar {
+    archiveBaseName = 'parking-lot' //Final artifact name matches module name
+    version = null                //Please do not change this final artifact version
+    manifest {
+        attributes 'Main-Class': 'org.shashtra.Main' // Change this when you add your main class
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+}
