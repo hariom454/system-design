@@ -1,17 +1,43 @@
 package org.shashtra;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import java.util.ArrayList;
+import java.util.List;
+import org.shashtra.models.Floor;
+import org.shashtra.models.ParkingLot;
+import org.shashtra.models.Slot;
+import org.shashtra.models.VehicleType;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+public class Main {
+  public static void main(String[] args) {
+    ParkingLot parkingLot = new ParkingLot(1, new ArrayList<>());
+    for (int i = 0; i < 3; i++) {
+      Floor floor = createFloor(i);
+      parkingLot.addFloor(floor);
     }
+    parkingLot.displayFreeSlots();
+  }
+
+  private static Floor createFloor(int id) {
+    Floor floor = new Floor(id, new ArrayList<>());
+
+    // add 5 slots for bike
+    for (int i = 0; i < 5; i++) {
+      Slot slot = new Slot(VehicleType.BIKE.name() + id + "-" + i, VehicleType.BIKE);
+      floor.addSlot(slot);
+    }
+
+    // add 5 slots for SUV
+    for (int i = 0; i < 5; i++) {
+      Slot slot = new Slot(VehicleType.SUV.name() + id + "-" + i, VehicleType.SUV);
+      floor.addSlot(slot);
+    }
+
+    // add 2 slots for bus
+    for (int i = 0; i < 2; i++) {
+      Slot slot = new Slot(VehicleType.BUS.name() + id + "-" + i, VehicleType.BUS);
+      floor.addSlot(slot);
+    }
+
+    return floor;
+  }
 }
