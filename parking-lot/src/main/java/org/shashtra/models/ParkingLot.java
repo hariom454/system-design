@@ -15,7 +15,23 @@ public record ParkingLot(int id, List<Floor> floors) {
           List<Slot> freeSlots = floor.slots().stream().filter(Slot::isAvailable).toList();
           freeSlots.forEach(
               slot -> {
-                System.out.println("SlotId: " + slot.getId() + " " + slot.getSlotType());
+                System.out.println(slot.getSlotType() + " " + slot.getId());
+              });
+        });
+
+    System.out.println("======================================");
+  }
+
+  public void getParkedVehicles() {
+    System.out.println("========== Occupied Free Slots ===========");
+    floors.forEach(
+        floor -> {
+          System.out.println("Occupied slots at floor: " + floor.id());
+          List<Slot> freeSlots =
+              floor.slots().stream().filter(slot -> !slot.isAvailable()).toList();
+          freeSlots.forEach(
+              slot -> {
+                System.out.println(slot.getSlotType() + " " + slot.getId());
               });
         });
 

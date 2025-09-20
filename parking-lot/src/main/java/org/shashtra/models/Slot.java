@@ -52,4 +52,20 @@ public class Slot {
   public void setVehicleId(String vehicleId) {
     this.vehicleId = vehicleId;
   }
+
+  @Override
+  public String toString() {
+    return "Slot{"
+        + "id='"
+        + id
+        + '\''
+        + ", slotType="
+        + slotType
+        + ", isAvailable="
+        + isAvailable
+        + ", vehicleId='"
+        + vehicleId
+        + '\''
+        + '}';
+  }
 }

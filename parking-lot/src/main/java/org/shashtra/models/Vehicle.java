@@ -1,6 +1,3 @@
 package org.shashtra.models;
 
-public record Vehicle(
-    String id,
-    VehicleType vehicleType
-) {}
+public record Vehicle(String id, VehicleType vehicleType) {}

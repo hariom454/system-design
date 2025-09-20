@@ -5,15 +5,18 @@ import java.math.BigDecimal;
 public class Ticket {
   private String id;
   private String vehicleId;
-  private Slot slot;
+  private String slotId;
+  private VehicleType vehicleType;
   private long parkedAt;
   private long unparkedAt;
   private BigDecimal charges;
 
-  public Ticket(String id, String vehicleId, Slot slot, long parkedAt) {
+  public Ticket(
+      String id, String vehicleId, String slotId, VehicleType vehicleType, long parkedAt) {
     this.id = id;
     this.vehicleId = vehicleId;
-    this.slot = slot;
+    this.slotId = slotId;
+    this.vehicleType = vehicleType;
     this.parkedAt = parkedAt;
   }
 
@@ -31,14 +34,6 @@ public class Ticket {
 
   public void setVehicleId(String vehicleId) {
     this.vehicleId = vehicleId;
-  }
-
-  public Slot getSlot() {
-    return slot;
-  }
-
-  public void setSlot(Slot slot) {
-    this.slot = slot;
   }
 
   public long getParkedAt() {
@@ -63,5 +58,45 @@ public class Ticket {
 
   public void setCharges(BigDecimal charges) {
     this.charges = charges;
+  }
+
+  public VehicleType getVehicleType() {
+    return vehicleType;
+  }
+
+  public void setVehicleType(VehicleType vehicleType) {
+    this.vehicleType = vehicleType;
+  }
+
+  public String getSlotId() {
+    return slotId;
+  }
+
+  public void setSlotId(String slotId) {
+    this.slotId = slotId;
+  }
+
+  @Override
+  public String toString() {
+    return "Ticket{"
+        + "id='"
+        + id
+        + '\''
+        + ", vehicleId='"
+        + vehicleId
+        + '\''
+        + ", slotId='"
+        + slotId
+        + '\''
+        + ", vehicleType='"
+        + vehicleType
+        + '\''
+        + ", parkedAt="
+        + parkedAt
+        + ", unparkedAt="
+        + unparkedAt
+        + ", charges="
+        + charges
+        + '}';
   }
 }

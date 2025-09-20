@@ -1,6 +1,7 @@
 package org.shashtra.services;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,7 @@ import org.shashtra.models.VehicleType;
 
 public class TicketService {
 
-  private Map<String, Ticket> tickets;
+  private final Map<String, Ticket> tickets;
 
   public TicketService() {
     this.tickets = new HashMap<>();
@@ -21,7 +22,12 @@ public class TicketService {
 
   public Ticket createTicket(Vehicle vehicle, Slot slot) {
     Ticket ticket =
-        new Ticket(UUID.randomUUID().toString(), vehicle.id(), slot, System.currentTimeMillis());
+        new Ticket(
+            UUID.randomUUID().toString(),
+            vehicle.id(),
+            slot.getId(),
+            slot.getSlotType(),
+            System.currentTimeMillis());
     tickets.put(ticket.getId(), ticket);
     return ticket;
   }
@@ -39,11 +45,13 @@ public class TicketService {
   }
 
   private BigDecimal getParkingCharges(Ticket ticket) {
-    VehicleType type = ticket.getSlot().getSlotType();
     long diff = ticket.getUnparkedAt() - ticket.getParkedAt();
-    Duration duration = Duration.ofMillis(diff);
 
-    ticket.setCharges(charges(type).multiply(BigDecimal.valueOf(duration.toHours())));
+    double duration = 1000 * diff * 1.0 / (1000 * 60 * 60);
+    ticket.setCharges(
+        charges(ticket.getVehicleType())
+            .multiply(BigDecimal.valueOf(duration))
+            .setScale(2, RoundingMode.HALF_DOWN));
     return ticket.getCharges();
   }
 

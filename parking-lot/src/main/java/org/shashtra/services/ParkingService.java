@@ -13,6 +13,11 @@ public class ParkingService {
   private ParkingLot parkingLot;
   private TicketService ticketService;
 
+  public ParkingService(ParkingLot parkingLot) {
+    this.parkingLot = parkingLot;
+    this.ticketService = new TicketService();
+  }
+
   public Ticket parkVehicle(Vehicle vehicle) throws NotFoundException {
     Slot slot = findEmptySlot(vehicle);
     slot.occupySlot(vehicle.id());
@@ -23,9 +28,13 @@ public class ParkingService {
   public Ticket unparkVehicle(String ticketId) throws NotFoundException {
 
     Ticket ticket = ticketService.ticketWithCharges(ticketId);
-    ticket.getSlot().freeSlot();
-    ticket.setVehicleId(null);
 
+    // get slot and make it free
+    String[] ids = ticket.getSlotId().split("-");
+    Slot slot =
+        parkingLot.floors().get(Integer.parseInt(ids[1])).slots().get(Integer.parseInt(ids[2]));
+    slot.freeSlot();
+    slot.setVehicleId(null);
     return ticket;
   }
 
@@ -42,19 +51,5 @@ public class ParkingService {
       }
     }
     throw new NotFoundException("No free slot available for: " + vehicle.vehicleType());
-  }
-
-  public void displayFreeSlots() {
-    List<Floor> floors = parkingLot.floors();
-    System.out.println("==========Free Slots at parking: " + parkingLot.id() + " ===========");
-    floors.forEach(
-        floor -> {
-          System.out.println("Available slots at floor: " + floor.id());
-          List<Slot> freeSlots = floor.slots().stream().filter(Slot::isAvailable).toList();
-          freeSlots.forEach(
-              slot -> {
-                System.out.println("SlotId: " + slot.getId() + " " + slot.getSlotType());
-              });
-        });
   }
 }
