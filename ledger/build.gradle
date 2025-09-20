@@ -69,7 +69,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.example'
+group = 'org.shashtra'
 version = '1.0'
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -79,7 +79,7 @@ jar {
     archiveBaseName = 'ledger' //Final artifact name matches module name
     version =  null               //Please do not change this final artifact version
     manifest {
-        attributes 'Main-Class' : 'org.example.Main' //This is main class of your program which will be executed
+        attributes 'Main-Class' : 'org.shashtra.Main' //This is main class of your program which will be executed
     }
 
     // To create a single jar with all dependencies.

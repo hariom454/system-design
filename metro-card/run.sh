@@ -1,6 +1,12 @@
 #!/bin/bash
+set -e
 
 cd metro-card
-pwd
 ./gradlew clean build -x test --no-daemon
-java -jar build/libs/metro-card.jar input1.txt
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 <input_file>"
+  exit 1
+fi
+
+java -jar build/libs/metro-card.jar "$1"

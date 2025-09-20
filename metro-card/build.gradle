@@ -69,17 +69,17 @@ plugins {
     id 'java'
 }
 
-group = 'com.example'
+group = 'org.shashtra'
 version = '1.0'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 
 jar {
-    archiveBaseName = 'geektrust' //Please do not change this final artifact name
+    archiveBaseName = 'metro-card' //Final artifact name matches module name
     version =  null               //Please do not change this final artifact version
     manifest {
-        attributes 'Main-Class' : 'org.example.metrocard.Main' //This is main class of your program which will be executed
+        attributes 'Main-Class' : 'org.shashtra.Main' //This is main class of your program which will be executed
     }
 
     // To create a single jar with all dependencies.

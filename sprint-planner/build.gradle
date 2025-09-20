@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'org.example'
+group = 'org.shashtra'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -23,7 +23,7 @@ jar {
     archiveBaseName = 'sprint-planner' //Final artifact name matches module name
     version = null                //Please do not change this final artifact version
     manifest {
-        attributes 'Main-Class': 'org.example.Main' // Change this when you add your main class
+        attributes 'Main-Class': 'org.shashtra.Main' // Change this when you add your main class
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }

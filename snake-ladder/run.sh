@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+cd snake-ladder
 ./gradlew clean build -x test --no-daemon
 
 if [ -z "$1" ]; then

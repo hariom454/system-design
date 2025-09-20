@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+cd ledger
 ./gradlew clean build -x test --no-daemon
 
 if [ -z "$1" ]; then
