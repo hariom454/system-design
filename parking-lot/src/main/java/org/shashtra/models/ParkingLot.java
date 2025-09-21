@@ -11,8 +11,8 @@ public record ParkingLot(int id, List<Floor> floors) {
     System.out.println("========== Available Free Slots ===========");
     floors.forEach(
         floor -> {
-          System.out.println("Available slots at floor: " + floor.id());
-          List<Slot> freeSlots = floor.slots().stream().filter(Slot::isAvailable).toList();
+          System.out.println("Available slots at floor: " + floor.getId());
+          List<Slot> freeSlots = floor.getSlots().stream().filter(Slot::isAvailable).toList();
           freeSlots.forEach(
               slot -> {
                 System.out.println(slot.getSlotType() + " " + slot.getId());
@@ -26,9 +26,9 @@ public record ParkingLot(int id, List<Floor> floors) {
     System.out.println("========== Occupied Free Slots ===========");
     floors.forEach(
         floor -> {
-          System.out.println("Occupied slots at floor: " + floor.id());
+          System.out.println("Occupied slots at floor: " + floor.getId());
           List<Slot> freeSlots =
-              floor.slots().stream().filter(slot -> !slot.isAvailable()).toList();
+              floor.getSlots().stream().filter(slot -> !slot.isAvailable()).toList();
           freeSlots.forEach(
               slot -> {
                 System.out.println(slot.getSlotType() + " " + slot.getId());

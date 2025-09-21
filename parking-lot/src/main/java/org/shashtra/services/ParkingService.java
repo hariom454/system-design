@@ -10,12 +10,12 @@ import org.shashtra.models.Ticket;
 import org.shashtra.models.Vehicle;
 
 public class ParkingService {
-  private ParkingLot parkingLot;
-  private TicketService ticketService;
+  private final ParkingLot parkingLot;
+  private final TicketService ticketService;
 
-  public ParkingService(ParkingLot parkingLot) {
+  public ParkingService(ParkingLot parkingLot, TicketService ticketService) {
     this.parkingLot = parkingLot;
-    this.ticketService = new TicketService();
+    this.ticketService = ticketService;
   }
 
   public Ticket parkVehicle(Vehicle vehicle) throws NotFoundException {
@@ -32,7 +32,7 @@ public class ParkingService {
     // get slot and make it free
     String[] ids = ticket.getSlotId().split("-");
     Slot slot =
-        parkingLot.floors().get(Integer.parseInt(ids[1])).slots().get(Integer.parseInt(ids[2]));
+        parkingLot.floors().get(Integer.parseInt(ids[1])).getSlots().get(Integer.parseInt(ids[2]));
     slot.freeSlot();
     slot.setVehicleId(null);
     return ticket;
@@ -41,7 +41,7 @@ public class ParkingService {
   private Slot findEmptySlot(Vehicle vehicle) throws NotFoundException {
     List<Floor> floors = parkingLot.floors();
     for (Floor floor : floors) {
-      List<Slot> slots = floor.slots();
+      List<Slot> slots = floor.getSlots();
       Optional<Slot> res =
           slots.stream()
               .filter(slot -> slot.isAvailable() && slot.getSlotType() == vehicle.vehicleType())

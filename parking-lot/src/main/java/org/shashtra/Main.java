@@ -7,13 +7,17 @@ import org.shashtra.models.Slot;
 import org.shashtra.models.Ticket;
 import org.shashtra.models.Vehicle;
 import org.shashtra.models.VehicleType;
+import org.shashtra.repository.TicketRepository;
 import org.shashtra.services.ParkingService;
+import org.shashtra.services.TicketService;
 
 public class Main {
   public static void main(String[] args) {
     ParkingLot parkingLot = new ParkingLot(1, new ArrayList<>());
+    TicketRepository ticketRepository = new TicketRepository();
     addFloors(parkingLot);
-    ParkingService parkingService = new ParkingService(parkingLot);
+    ParkingService parkingService =
+        new ParkingService(parkingLot, new TicketService(ticketRepository));
 
     Vehicle vehicle = new Vehicle("UP84E3967", VehicleType.BIKE);
 
@@ -43,7 +47,7 @@ public class Main {
   }
 
   private static Floor createFloor(int id) {
-    Floor floor = new Floor(id, new ArrayList<>());
+    Floor floor = new Floor(id);
 
     // add 5 slots for bike
     for (int i = 0; i < 3; i++) {

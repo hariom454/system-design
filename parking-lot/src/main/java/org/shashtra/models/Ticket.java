@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 public class Ticket {
   private String id;
   private String vehicleId;
-  private String slotId;
   private VehicleType vehicleType;
+  private String slotId;
   private long parkedAt;
   private long unparkedAt;
   private BigDecimal charges;

@@ -6,7 +6,7 @@ import org.shashtra.exceptions.NotFoundException;
 import org.shashtra.models.Vehicle;
 
 public class VehicleRepository {
-  private Map<String, Vehicle> vehicles;
+  private final Map<String, Vehicle> vehicles;
 
   public VehicleRepository() {
     vehicles = new HashMap<>();
@@ -18,7 +18,7 @@ public class VehicleRepository {
 
   private Vehicle getVehicle(String id) throws NotFoundException {
     if (!vehicles.containsKey(id)) {
-      throw new NotFoundException("Vehicle not found: " + id);
+      throw new NotFoundException("Vehicle not found with id: " + id);
     }
 
     return vehicles.get(id);
