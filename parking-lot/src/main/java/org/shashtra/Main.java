@@ -1,17 +1,92 @@
 package org.shashtra;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import java.util.ArrayList;
+import org.shashtra.exceptions.NotFoundException;
+import org.shashtra.factories.ParkingStrategyFactory;
+import org.shashtra.models.Floor;
+import org.shashtra.models.ParkingLot;
+import org.shashtra.models.Slot;
+import org.shashtra.models.Ticket;
+import org.shashtra.models.Vehicle;
+import org.shashtra.models.VehicleType;
+import org.shashtra.repository.TicketRepository;
+import org.shashtra.services.ParkingService;
+import org.shashtra.services.TicketService;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+public class Main {
+  public static void main(String[] args) {
+    ParkingLot parkingLot = new ParkingLot(1, new ArrayList<>());
+    TicketRepository ticketRepository = new TicketRepository();
+    addFloors(parkingLot);
+    ParkingService parkingService =
+        new ParkingService(
+            parkingLot, new TicketService(ticketRepository, new ParkingStrategyFactory()));
+
+    Vehicle bike = new Vehicle("UP84E3967", VehicleType.BIKE);
+    Vehicle bike2 = new Vehicle("UP84E3967", VehicleType.BIKE);
+    Vehicle bus = new Vehicle("UP84E3968", VehicleType.BUS);
+    Vehicle suv = new Vehicle("UP84E3969", VehicleType.SUV);
+
+    try {
+      Ticket ticket = parkingService.parkVehicle(bike);
+      System.out.println("Parked successfully, ticked: " + ticket);
+      parkingService.parkVehicle(bike2);
+      parkingService.parkVehicle(bus);
+      parkingService.parkVehicle(bus);
+      parkingService.parkVehicle(bus);
+      parkingService.parkVehicle(suv);
+      parkingLot.getParkedVehicles();
+      Thread.sleep(500);
+
+      Ticket charges = parkingService.unparkVehicle(ticket.getId());
+      System.out.println("Final receipt: " + charges);
+    } catch (Exception ex) {
+      System.err.println("error: " + ex.getMessage());
     }
+
+    try {
+      // only 3 slots for bus, this should throw error
+      parkingService.parkVehicle(bus);
+    } catch (NotFoundException e) {
+      e.printStackTrace();
+    }
+
+    parkingLot.getParkedVehicles();
+  }
+
+  private static void addFloors(ParkingLot parkingLot) {
+    for (int i = 0; i < 3; i++) {
+      Floor floor = createFloor(i);
+      parkingLot.addFloor(floor);
+    }
+    parkingLot.displayFreeSlots();
+  }
+
+  private static Floor createFloor(int id) {
+    Floor floor = new Floor(id);
+
+    // add 5 slots for bike
+    for (int i = 0; i < 3; i++) {
+      Slot slot = getSlot(VehicleType.BIKE, id, i);
+      floor.addSlot(slot);
+    }
+
+    // add 5 slots for SUV
+    for (int i = 0; i < 2; i++) {
+      Slot slot = getSlot(VehicleType.SUV, id, i);
+      floor.addSlot(slot);
+    }
+
+    // add 2 slots for bus
+    for (int i = 0; i < 1; i++) {
+      Slot slot = getSlot(VehicleType.BUS, id, i);
+      floor.addSlot(slot);
+    }
+
+    return floor;
+  }
+
+  private static Slot getSlot(VehicleType type, int floorId, int number) {
+    return new Slot(String.format("%s-%s-%s", type.name(), floorId, number), type);
+  }
 }
