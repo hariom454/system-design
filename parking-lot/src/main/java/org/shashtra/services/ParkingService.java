@@ -1,6 +1,7 @@
 package org.shashtra.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.shashtra.exceptions.NotFoundException;
 import org.shashtra.models.Floor;
@@ -9,14 +10,7 @@ import org.shashtra.models.Slot;
 import org.shashtra.models.Ticket;
 import org.shashtra.models.Vehicle;
 
-public class ParkingService {
-  private final ParkingLot parkingLot;
-  private final TicketService ticketService;
-
-  public ParkingService(ParkingLot parkingLot, TicketService ticketService) {
-    this.parkingLot = parkingLot;
-    this.ticketService = ticketService;
-  }
+public record ParkingService(ParkingLot parkingLot, TicketService ticketService) {
 
   public Ticket parkVehicle(Vehicle vehicle) throws NotFoundException {
     Slot slot = findEmptySlot(vehicle);
@@ -29,10 +23,15 @@ public class ParkingService {
 
     Ticket ticket = ticketService.ticketWithCharges(ticketId);
 
-    // get slot and make it free
-    String[] ids = ticket.getSlotId().split("-");
     Slot slot =
-        parkingLot.floors().get(Integer.parseInt(ids[1])).getSlots().get(Integer.parseInt(ids[2]));
+        parkingLot.floors().stream()
+            .map(Floor::getSlots)
+            .flatMap(
+                slots -> slots.stream().filter(slot1 -> slot1.getId().equals(ticket.getSlotId())))
+            .findFirst()
+            .orElseThrow(
+                () -> new RuntimeException("Slot id not valid! check the application logic"));
+
     slot.freeSlot();
     slot.setVehicleId(null);
     return ticket;

@@ -3,11 +3,11 @@ package org.shashtra.models;
 import java.math.BigDecimal;
 
 public class Ticket {
-  private String id;
-  private String vehicleId;
-  private VehicleType vehicleType;
-  private String slotId;
-  private long parkedAt;
+  private final String id;
+  private final String vehicleId;
+  private final VehicleType vehicleType;
+  private final String slotId;
+  private final long parkedAt;
   private long unparkedAt;
   private BigDecimal charges;
 
@@ -24,24 +24,8 @@ public class Ticket {
     return id;
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getVehicleId() {
-    return vehicleId;
-  }
-
-  public void setVehicleId(String vehicleId) {
-    this.vehicleId = vehicleId;
-  }
-
   public long getParkedAt() {
     return parkedAt;
-  }
-
-  public void setParkedAt(long parkedAt) {
-    this.parkedAt = parkedAt;
   }
 
   public long getUnparkedAt() {
@@ -64,16 +48,8 @@ public class Ticket {
     return vehicleType;
   }
 
-  public void setVehicleType(VehicleType vehicleType) {
-    this.vehicleType = vehicleType;
-  }
-
   public String getSlotId() {
     return slotId;
-  }
-
-  public void setSlotId(String slotId) {
-    this.slotId = slotId;
   }
 
   @Override

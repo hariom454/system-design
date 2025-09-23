@@ -4,22 +4,22 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.UUID;
 import org.shashtra.exceptions.NotFoundException;
+import org.shashtra.factories.ParkingStrategyFactory;
 import org.shashtra.models.Slot;
 import org.shashtra.models.Ticket;
 import org.shashtra.models.Vehicle;
-import org.shashtra.models.VehicleType;
 import org.shashtra.repository.TicketRepository;
-import org.shashtra.strategies.BikeParkingStrategy;
-import org.shashtra.strategies.BusParkingStrategy;
 import org.shashtra.strategies.ParkingChargeStrategy;
-import org.shashtra.strategies.SUVParkingStrategy;
 
 public class TicketService {
 
   private final TicketRepository ticketRepository;
+  private final ParkingStrategyFactory parkingStrategyFactory;
 
-  public TicketService(TicketRepository ticketRepository) {
+  public TicketService(
+      TicketRepository ticketRepository, ParkingStrategyFactory parkingStrategyFactory) {
     this.ticketRepository = ticketRepository;
+    this.parkingStrategyFactory = parkingStrategyFactory;
   }
 
   public Ticket createTicket(Vehicle vehicle, Slot slot) {
@@ -50,30 +50,13 @@ public class TicketService {
     // scale the duration by 1000 to see the diff when duration is converted in hours
     double duration = 1000 * diff * 1.0 / (1000 * 60 * 60);
 
-    ParkingChargeStrategy strategy = getParkingStrategy(ticket.getVehicleType());
+    ParkingChargeStrategy strategy =
+        parkingStrategyFactory.getParkingStrategy(ticket.getVehicleType());
     ticket.setCharges(
         strategy
             .getParkingCharges()
             .multiply(BigDecimal.valueOf(duration))
             .setScale(2, RoundingMode.HALF_DOWN));
     return ticket.getCharges();
-  }
-
-  private ParkingChargeStrategy getParkingStrategy(VehicleType type) {
-    switch (type) {
-      case VehicleType.BUS -> {
-        return new BusParkingStrategy();
-      }
-      case VehicleType.SUV -> {
-        return new SUVParkingStrategy();
-      }
-      case VehicleType.BIKE -> {
-        return new BikeParkingStrategy();
-      }
-      default -> {
-        throw new IllegalArgumentException(
-            "Not supported type, implement the parking strategy and add here");
-      }
-    }
   }
 }

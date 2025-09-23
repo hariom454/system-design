@@ -1,6 +1,8 @@
 package org.shashtra;
 
 import java.util.ArrayList;
+import org.shashtra.exceptions.NotFoundException;
+import org.shashtra.factories.ParkingStrategyFactory;
 import org.shashtra.models.Floor;
 import org.shashtra.models.ParkingLot;
 import org.shashtra.models.Slot;
@@ -17,22 +19,36 @@ public class Main {
     TicketRepository ticketRepository = new TicketRepository();
     addFloors(parkingLot);
     ParkingService parkingService =
-        new ParkingService(parkingLot, new TicketService(ticketRepository));
+        new ParkingService(
+            parkingLot, new TicketService(ticketRepository, new ParkingStrategyFactory()));
 
-    Vehicle vehicle = new Vehicle("UP84E3967", VehicleType.BIKE);
+    Vehicle bike = new Vehicle("UP84E3967", VehicleType.BIKE);
+    Vehicle bike2 = new Vehicle("UP84E3967", VehicleType.BIKE);
+    Vehicle bus = new Vehicle("UP84E3968", VehicleType.BUS);
+    Vehicle suv = new Vehicle("UP84E3969", VehicleType.SUV);
 
     try {
-      Ticket ticket = parkingService.parkVehicle(vehicle);
+      Ticket ticket = parkingService.parkVehicle(bike);
       System.out.println("Parked successfully, ticked: " + ticket);
-
+      parkingService.parkVehicle(bike2);
+      parkingService.parkVehicle(bus);
+      parkingService.parkVehicle(bus);
+      parkingService.parkVehicle(bus);
+      parkingService.parkVehicle(suv);
       parkingLot.getParkedVehicles();
-
       Thread.sleep(500);
 
       Ticket charges = parkingService.unparkVehicle(ticket.getId());
       System.out.println("Final receipt: " + charges);
     } catch (Exception ex) {
       System.err.println("error: " + ex.getMessage());
+    }
+
+    try {
+      // only 3 slots for bus, this should throw error
+      parkingService.parkVehicle(bus);
+    } catch (NotFoundException e) {
+      e.printStackTrace();
     }
 
     parkingLot.getParkedVehicles();
