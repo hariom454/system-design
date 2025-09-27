@@ -1,5 +1,6 @@
 package org.shashtra.services;
 
+import jakarta.inject.Singleton;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import org.shashtra.models.Vehicle;
 import org.shashtra.repository.TicketRepository;
 import org.shashtra.strategies.ParkingChargeStrategy;
 
+@Singleton
 public class TicketService {
 
   private final TicketRepository ticketRepository;
