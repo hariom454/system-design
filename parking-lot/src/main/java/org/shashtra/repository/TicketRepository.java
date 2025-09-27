@@ -1,10 +1,12 @@
 package org.shashtra.repository;
 
+import jakarta.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 import org.shashtra.exceptions.NotFoundException;
 import org.shashtra.models.Ticket;
 
+@Singleton
 public class TicketRepository {
   private final Map<String, Ticket> tickets;
 

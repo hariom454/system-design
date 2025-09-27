@@ -1,10 +1,20 @@
 package org.shashtra.models;
 
+import io.micronaut.core.annotation.Creator;
+import jakarta.inject.Singleton;
 import java.util.List;
 
+@Singleton
 public record ParkingLot(int id, List<Floor> floors) {
   public void addFloor(Floor floor) {
     this.floors.add(floor);
+  }
+
+  // TODO: remove this type of injection and managed parking lot from different interface. inject
+  // using creator with default values
+  @Creator
+  static ParkingLot getDefault() {
+    return new ParkingLot(1, List.of(new Floor(1)));
   }
 
   public void displayFreeSlots() {
