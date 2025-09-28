@@ -26,12 +26,7 @@ public class TicketService {
 
   public Ticket createTicket(Vehicle vehicle, Slot slot) {
     Ticket ticket =
-        new Ticket(
-            UUID.randomUUID().toString(),
-            vehicle.id(),
-            slot.getId(),
-            slot.getSlotType(),
-            System.currentTimeMillis());
+        new Ticket(UUID.randomUUID().toString(), vehicle, slot.getId(), System.currentTimeMillis());
     ticketRepository.addTicket(ticket);
     return ticket;
   }
@@ -53,7 +48,7 @@ public class TicketService {
     double duration = 1000 * diff * 1.0 / (1000 * 60 * 60);
 
     ParkingChargeStrategy strategy =
-        parkingStrategyFactory.getParkingStrategy(ticket.getVehicleType());
+        parkingStrategyFactory.getParkingStrategy(ticket.getVehicle().vehicleType());
     ticket.setCharges(
         strategy
             .getParkingCharges()
