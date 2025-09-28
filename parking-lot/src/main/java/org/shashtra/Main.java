@@ -71,7 +71,7 @@ public class Main {
   }
 
   private static Floor createFloor(int id) {
-    Floor floor = new Floor(id);
+    Floor floor = new Floor(1, id);
 
     // add 5 slots for bike
     for (int i = 0; i < 3; i++) {
@@ -95,6 +95,6 @@ public class Main {
   }
 
   private static Slot getSlot(VehicleType type, int floorId, int number) {
-    return new Slot(String.format("%s-%s-%s", type.name(), floorId, number), type);
+    return new Slot(String.format("%s-%s-%s", type.name(), floorId, number), floorId, type);
   }
 }

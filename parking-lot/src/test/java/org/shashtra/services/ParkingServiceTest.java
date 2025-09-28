@@ -2,7 +2,6 @@ package org.shashtra.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.shashtra.exceptions.NotFoundException;
@@ -27,7 +26,7 @@ class ParkingServiceTest {
 
   @Test
   void parkVehicle() throws NotFoundException {
-    parkingService.parkingLot().addFloor(Utilities.createFloor(1));
+    parkingService.parkingLot().addFloor(Utilities.createFloor(1, ));
     Vehicle v = Utilities.createVehicle(VehicleType.BIKE);
     Ticket t = parkingService.parkVehicle(v);
     assertNotNull(t);

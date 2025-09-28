@@ -14,8 +14,8 @@ public record ParkingLot(int id, List<Floor> floors) {
   // using creator with default values
   @Creator
   static ParkingLot getDefault() {
-    Floor floor = new Floor(1);
-    floor.addSlot(new Slot("1", VehicleType.SUV));
+    Floor floor = new Floor(1, 1);
+    floor.addSlot(new Slot("1", floor.getId(), VehicleType.SUV));
     return new ParkingLot(1, List.of(floor));
   }
 
