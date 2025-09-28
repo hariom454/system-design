@@ -34,6 +34,10 @@ public class TicketService {
   public Ticket ticketWithCharges(String ticketId) throws NotFoundException {
 
     Ticket ticket = ticketRepository.getTicket(ticketId);
+    if (ticket.getUnparkedAt() != 0) {
+      throw new IllegalStateException(
+          "Vehicle already unparked, vehicle id: " + ticket.getVehicle().id());
+    }
 
     long now = System.currentTimeMillis();
     ticket.setUnparkedAt(now);

@@ -12,7 +12,7 @@ import org.shashtra.services.ParkingService;
 
 @Controller("/parking")
 public class ParkingController {
-  private ParkingService parkingService;
+  private final ParkingService parkingService;
 
   public ParkingController(ParkingService parkingService) {
     this.parkingService = parkingService;
