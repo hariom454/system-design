@@ -2,13 +2,15 @@ package org.shashtra.controllers;
 
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Delete;
+import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import org.shashtra.exceptions.NotFoundException;
 import org.shashtra.models.Ticket;
 import org.shashtra.models.Vehicle;
 import org.shashtra.services.ParkingService;
 
-@Controller
+@Controller("/parking")
 public class ParkingController {
   private ParkingService parkingService;
 
@@ -16,13 +18,13 @@ public class ParkingController {
     this.parkingService = parkingService;
   }
 
-  @Post("/park-vehicle")
+  @Post("/vehicle")
   public Ticket parkVehicle(@Body Vehicle vehicle) throws NotFoundException {
     return parkingService.parkVehicle(vehicle);
   }
 
-  @Post("/unpark-vehicle")
-  public String unparkVehicle() {
-    return "unparked";
+  @Delete("/vehicle/{ticketId}")
+  public Ticket unparkVehicle(@PathVariable String ticketId) throws NotFoundException {
+    return parkingService.unparkVehicle(ticketId);
   }
 }

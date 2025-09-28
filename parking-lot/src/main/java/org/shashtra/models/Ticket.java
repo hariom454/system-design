@@ -1,7 +1,9 @@
 package org.shashtra.models;
 
+import io.micronaut.serde.annotation.Serdeable;
 import java.math.BigDecimal;
 
+@Serdeable
 public class Ticket {
   private final String id;
   private final String vehicleId;
