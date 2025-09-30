@@ -1,5 +1,6 @@
 package org.shashtra.services;
 
+import jakarta.inject.Singleton;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import org.shashtra.models.Vehicle;
 import org.shashtra.repository.TicketRepository;
 import org.shashtra.strategies.ParkingChargeStrategy;
 
+@Singleton
 public class TicketService {
 
   private final TicketRepository ticketRepository;
@@ -24,12 +26,7 @@ public class TicketService {
 
   public Ticket createTicket(Vehicle vehicle, Slot slot) {
     Ticket ticket =
-        new Ticket(
-            UUID.randomUUID().toString(),
-            vehicle.id(),
-            slot.getId(),
-            slot.getSlotType(),
-            System.currentTimeMillis());
+        new Ticket(UUID.randomUUID().toString(), vehicle, slot.getId(), System.currentTimeMillis());
     ticketRepository.addTicket(ticket);
     return ticket;
   }
@@ -37,6 +34,10 @@ public class TicketService {
   public Ticket ticketWithCharges(String ticketId) throws NotFoundException {
 
     Ticket ticket = ticketRepository.getTicket(ticketId);
+    if (ticket.getUnparkedAt() != 0) {
+      throw new IllegalStateException(
+          "Vehicle already unparked, vehicle id: " + ticket.getVehicle().id());
+    }
 
     long now = System.currentTimeMillis();
     ticket.setUnparkedAt(now);
@@ -51,7 +52,7 @@ public class TicketService {
     double duration = 1000 * diff * 1.0 / (1000 * 60 * 60);
 
     ParkingChargeStrategy strategy =
-        parkingStrategyFactory.getParkingStrategy(ticket.getVehicleType());
+        parkingStrategyFactory.getParkingStrategy(ticket.getVehicle().vehicleType());
     ticket.setCharges(
         strategy
             .getParkingCharges()

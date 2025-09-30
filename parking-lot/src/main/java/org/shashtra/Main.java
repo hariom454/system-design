@@ -1,6 +1,7 @@
 package org.shashtra;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.shashtra.exceptions.NotFoundException;
 import org.shashtra.factories.ParkingStrategyFactory;
 import org.shashtra.models.Floor;
@@ -12,15 +13,22 @@ import org.shashtra.models.VehicleType;
 import org.shashtra.repository.TicketRepository;
 import org.shashtra.services.ParkingService;
 import org.shashtra.services.TicketService;
+import org.shashtra.strategies.BikeParkingStrategy;
+import org.shashtra.strategies.BusParkingStrategy;
+import org.shashtra.strategies.ParkingChargeStrategy;
+import org.shashtra.strategies.SUVParkingStrategy;
 
 public class Main {
   public static void main(String[] args) {
     ParkingLot parkingLot = new ParkingLot(1, new ArrayList<>());
     TicketRepository ticketRepository = new TicketRepository();
     addFloors(parkingLot);
+    List<ParkingChargeStrategy> strategies =
+        List.of(new BikeParkingStrategy(), new BusParkingStrategy(), new SUVParkingStrategy());
     ParkingService parkingService =
         new ParkingService(
-            parkingLot, new TicketService(ticketRepository, new ParkingStrategyFactory()));
+            parkingLot,
+            new TicketService(ticketRepository, new ParkingStrategyFactory(strategies)));
 
     Vehicle bike = new Vehicle("UP84E3967", VehicleType.BIKE);
     Vehicle bike2 = new Vehicle("UP84E3967", VehicleType.BIKE);
@@ -63,7 +71,7 @@ public class Main {
   }
 
   private static Floor createFloor(int id) {
-    Floor floor = new Floor(id);
+    Floor floor = new Floor(1, id);
 
     // add 5 slots for bike
     for (int i = 0; i < 3; i++) {
@@ -87,6 +95,6 @@ public class Main {
   }
 
   private static Slot getSlot(VehicleType type, int floorId, int number) {
-    return new Slot(String.format("%s-%s-%s", type.name(), floorId, number), type);
+    return new Slot(String.format("%s-%s-%s", type.name(), floorId, number), floorId, type);
   }
 }

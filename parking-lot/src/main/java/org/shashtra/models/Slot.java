@@ -2,12 +2,14 @@ package org.shashtra.models;
 
 public class Slot {
   private final String id;
+  private final int floorId;
   private final VehicleType slotType;
   private boolean isAvailable;
   private String vehicleId;
 
-  public Slot(String id, VehicleType slotType) {
+  public Slot(String id, int floorId, VehicleType slotType) {
     this.id = id;
+    this.floorId = floorId;
     this.slotType = slotType;
     this.isAvailable = true;
   }
@@ -39,6 +41,10 @@ public class Slot {
 
   public void setVehicleId(String vehicleId) {
     this.vehicleId = vehicleId;
+  }
+
+  public int getFloorId() {
+    return floorId;
   }
 
   @Override

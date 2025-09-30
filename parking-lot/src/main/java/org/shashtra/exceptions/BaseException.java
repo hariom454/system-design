@@ -1,6 +1,6 @@
 package org.shashtra.exceptions;
 
-public class BaseException extends Exception {
+abstract class BaseException extends RuntimeException {
 
   public BaseException(String message) {
     super(message);

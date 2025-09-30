@@ -1,23 +1,27 @@
 package org.shashtra.strategies;
 
+import jakarta.inject.Singleton;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import org.shashtra.models.VehicleType;
 
+@Singleton
 public class BusParkingStrategy implements ParkingChargeStrategy {
 
-  private static BusParkingStrategy instance = null;
-
-  private BusParkingStrategy() {}
-
-  public static BusParkingStrategy getInstance() {
-    if (instance == null) {
-      instance = new BusParkingStrategy();
-    }
-    return instance;
-  }
+  private final VehicleType slotType = VehicleType.BUS;
 
   @Override
   public BigDecimal getParkingCharges() {
     return new BigDecimal(50).setScale(2, RoundingMode.HALF_EVEN);
+  }
+
+  @Override
+  public VehicleType getSlotType() {
+    return this.slotType;
+  }
+
+  @Override
+  public boolean supports(VehicleType type) {
+    return this.slotType == type;
   }
 }

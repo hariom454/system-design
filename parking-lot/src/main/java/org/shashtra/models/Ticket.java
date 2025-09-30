@@ -1,22 +1,25 @@
 package org.shashtra.models;
 
+import io.micronaut.serde.annotation.Serdeable;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import org.shashtra.dto.TicketDto;
 
+@Serdeable
 public class Ticket {
   private final String id;
-  private final String vehicleId;
-  private final VehicleType vehicleType;
+  private final Vehicle vehicle;
   private final String slotId;
   private final long parkedAt;
   private long unparkedAt;
   private BigDecimal charges;
 
-  public Ticket(
-      String id, String vehicleId, String slotId, VehicleType vehicleType, long parkedAt) {
+  public Ticket(String id, Vehicle vehicle, String slotId, long parkedAt) {
     this.id = id;
-    this.vehicleId = vehicleId;
+    this.vehicle = vehicle;
     this.slotId = slotId;
-    this.vehicleType = vehicleType;
     this.parkedAt = parkedAt;
   }
 
@@ -44,12 +47,31 @@ public class Ticket {
     this.charges = charges;
   }
 
-  public VehicleType getVehicleType() {
-    return vehicleType;
-  }
-
   public String getSlotId() {
     return slotId;
+  }
+
+  public Vehicle getVehicle() {
+    return vehicle;
+  }
+
+  public TicketDto ticketDto() {
+    return new TicketDto(
+        this.id,
+        this.vehicle,
+        this.slotId,
+        getLocalTime(this.parkedAt),
+        getLocalTime(this.unparkedAt),
+        this.charges);
+  }
+
+  private String getLocalTime(long time) {
+    if (time == 0) {
+      return null;
+    }
+
+    Instant instant = Instant.ofEpochMilli(time);
+    return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toString();
   }
 
   @Override
@@ -58,14 +80,10 @@ public class Ticket {
         + "id='"
         + id
         + '\''
-        + ", vehicleId='"
-        + vehicleId
-        + '\''
+        + ", vehicle="
+        + vehicle
         + ", slotId='"
         + slotId
-        + '\''
-        + ", vehicleType='"
-        + vehicleType
         + '\''
         + ", parkedAt="
         + parkedAt

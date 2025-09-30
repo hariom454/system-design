@@ -1,5 +1,11 @@
 plugins {
-    id 'java'
+
+    id("io.micronaut.application") version "4.5.4"
+
+    id("com.gradleup.shadow") version "8.3.7"
+
+    id("io.micronaut.aot") version "4.5.4"
+
 }
 
 group = 'org.shashtra'
@@ -9,28 +15,79 @@ repositories {
     mavenCentral()
 }
 
+application {
+
+    mainClass = "org.shashtra.Application"
+
+}
+
 dependencies {
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    compileOnly("io.micronaut:micronaut-http-client")
+    //logger
+    runtimeOnly("ch.qos.logback:logback-classic")
+
+    testImplementation("io.micronaut:micronaut-http-client")
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-test {
-    useJUnitPlatform()
+java {
+
+    sourceCompatibility = JavaVersion.toVersion("21")
+
+    targetCompatibility = JavaVersion.toVersion("21")
+
 }
 
-// Fat jar configuration to produce build/libs/geektrust.jar
-jar {
-    archiveBaseName = 'parking-lot' //Final artifact name matches module name
-    version = null                //Please do not change this final artifact version
-    manifest {
-        attributes 'Main-Class': 'org.shashtra.Main' // Change this when you add your main class
+
+micronaut {
+
+    runtime("netty")
+
+    testRuntime("junit5")
+
+    processing {
+
+        incremental(true)
+
+        annotations("org.shashtra.*")
+
     }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    } {
-        exclude "META-INF/*.SF"
-        exclude "META-INF/*.DSA"
-        exclude "META-INF/*.RSA"
+
+    aot {
+
+        // Please review carefully the optimizations enabled below
+
+        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+
+        optimizeServiceLoading = false
+
+        convertYamlToJava = false
+
+        precomputeOperations = true
+
+        cacheEnvironment = true
+
+        optimizeClassLoading = true
+
+        deduceEnvironment = true
+
+        optimizeNetty = true
+
+        replaceLogbackXml = true
+
     }
+
+}
+
+tasks.named("dockerfileNative") {
+    jdkVersion = "21"
+}
+
+test {
+    useJUnitPlatform()
 }
