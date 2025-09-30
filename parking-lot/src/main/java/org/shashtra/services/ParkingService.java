@@ -24,7 +24,6 @@ public final class ParkingService {
   public Ticket parkVehicle(Vehicle vehicle) throws NotFoundException {
     Slot slot = findEmptySlot(vehicle);
     slot.occupySlot(vehicle.id());
-
     return ticketService.createTicket(vehicle, slot);
   }
 
