@@ -10,9 +10,12 @@ import org.shashtra.models.ParkingLot;
 import org.shashtra.models.Slot;
 import org.shashtra.models.Ticket;
 import org.shashtra.models.Vehicle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public final class ParkingService {
+  private static final Logger LOGGER = LoggerFactory.getLogger(ParkingService.class);
   private final ParkingLot parkingLot;
   private final TicketService ticketService;
 
@@ -57,6 +60,7 @@ public final class ParkingService {
         return res.get();
       }
     }
+    LOGGER.error("No free slot available for: {}", vehicle.vehicleType());
     throw new NotFoundException("No free slot available for: " + vehicle.vehicleType());
   }
 
