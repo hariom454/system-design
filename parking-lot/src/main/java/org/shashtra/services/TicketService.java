@@ -11,9 +11,12 @@ import org.shashtra.models.Ticket;
 import org.shashtra.models.Vehicle;
 import org.shashtra.repository.TicketRepository;
 import org.shashtra.strategies.ParkingChargeStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class TicketService {
+  private static final Logger LOGGER = LoggerFactory.getLogger(TicketService.class);
 
   private final TicketRepository ticketRepository;
   private final ParkingStrategyFactory parkingStrategyFactory;
@@ -28,6 +31,7 @@ public class TicketService {
     Ticket ticket =
         new Ticket(UUID.randomUUID().toString(), vehicle, slot.getId(), System.currentTimeMillis());
     ticketRepository.addTicket(ticket);
+    LOGGER.info("Ticket created: {} for vehicle: {}", ticket.getId(), vehicle.id());
     return ticket;
   }
 
@@ -35,6 +39,7 @@ public class TicketService {
 
     Ticket ticket = ticketRepository.getTicket(ticketId);
     if (ticket.getUnparkedAt() != 0) {
+      LOGGER.error("Vehicle already unparked, vehicle id: {}", ticket.getVehicle().id());
       throw new IllegalStateException(
           "Vehicle already unparked, vehicle id: " + ticket.getVehicle().id());
     }

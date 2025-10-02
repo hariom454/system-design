@@ -14,7 +14,7 @@ public class Utilities {
   }
 
   public static Vehicle createVehicle(VehicleType type) {
-    return new Vehicle(type.name() + "-" + UUID.randomUUID().toString(), type);
+    return new Vehicle(type.name() + "-" + UUID.randomUUID(), type);
   }
 
   public static Floor createFloor(int id, int parkingLotId) {
